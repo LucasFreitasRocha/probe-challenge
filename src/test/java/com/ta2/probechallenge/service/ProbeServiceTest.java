@@ -1,10 +1,9 @@
 package com.ta2.probechallenge.service;
 
 import com.ta2.probechallenge.dto.in.CommandDTO;
-import com.ta2.probechallenge.model.Probe;
+import com.ta2.probechallenge.entity.ProbeEntity;
 import com.ta2.probechallenge.repository.ProbeRepository;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,9 +35,9 @@ class ProbeServiceTest {
 
     @Test
     void findOk() {
-        Probe expect = getProbe();
+        ProbeEntity expect = getProbe();
         when(repository.findById(id)).thenReturn(Optional.of(expect)) ;
-        Probe response = service.find(id);
+        ProbeEntity response = service.find(id);
         assertEquals(expect.getPosition(),response.getPosition() );
         assertEquals(expect.getX(),response.getX() );
         assertEquals(expect.getY(), response.getY());
@@ -59,7 +58,7 @@ class ProbeServiceTest {
     @Test
     void moveWithSingleCommandWhitProbe1(){
         when(repository.findById(id)).thenReturn(Optional.of(getProbe())) ;
-        Probe response = service.instruction(id,getCommandDTO("M"));
+        ProbeEntity response = service.instruction(id,getCommandDTO("M"));
         assertEquals(3, response.getY());
 
     }
@@ -67,7 +66,7 @@ class ProbeServiceTest {
     @Test
     void command1Probe1(){
         when(repository.findById(id)).thenReturn(Optional.of(getProbe())) ;
-        Probe response = service.instruction(id,getCommandDTO("LMLMLMLMM"));
+        ProbeEntity response = service.instruction(id,getCommandDTO("LMLMLMLMM"));
         assertEquals(1, response.getX());
         assertEquals(3, response.getY());
         assertEquals("N", response.getPosition());
@@ -79,14 +78,14 @@ class ProbeServiceTest {
         return  commandDTO;
     }
 
-    private Probe getProbe() {
-        Probe probe = new Probe();
-        probe.setId(id);
-        probe.setPosition("N");
-        probe.setX(1);
-        probe.setY(2);
-        probe.setName("mars rover");
-        return  probe;
+    private ProbeEntity getProbe() {
+        ProbeEntity probeEntity = new ProbeEntity();
+        probeEntity.setId(id);
+        probeEntity.setPosition("N");
+        probeEntity.setX(1);
+        probeEntity.setY(2);
+        probeEntity.setName("mars rover");
+        return probeEntity;
     }
 
     @Test

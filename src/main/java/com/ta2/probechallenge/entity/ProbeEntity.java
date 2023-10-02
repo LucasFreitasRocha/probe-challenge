@@ -1,5 +1,7 @@
-package com.ta2.probechallenge.model;
+package com.ta2.probechallenge.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,8 +10,10 @@ import javax.persistence.Id;
 
 @Data
 @NoArgsConstructor
-@Entity
-public class Probe {
+@AllArgsConstructor
+@Builder
+@Entity(name = "probe")
+public class ProbeEntity {
     @Id
     private Long id;
     private String name;
