@@ -1,19 +1,16 @@
 package com.ta2.probechallenge.service;
 
-import com.ta2.probechallenge.domain.ProbeDomain;
-import com.ta2.probechallenge.dto.in.CommandDTO;
-import com.ta2.probechallenge.entity.ProbeEntity;
-import com.ta2.probechallenge.repository.ProbeRepositoryAdapter;
-import com.ta2.probechallenge.repository.ProbeRepositorySql;
+import com.ta2.probechallenge.probe.domain.ProbeDomain;
+import com.ta2.probechallenge.probe.dto.in.CommandDto;
+import com.ta2.probechallenge.probe.repository.ProbeRepositoryAdapter;
 
+import com.ta2.probechallenge.probe.service.ProbeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -56,10 +53,8 @@ class ProbeServiceTest {
         assertEquals("N", response.getPosition());
     }
 
-    public CommandDTO getCommandDTO(String command){
-        CommandDTO commandDTO = new CommandDTO();
-        commandDTO.setCommand(command);
-        return  commandDTO;
+    public CommandDto getCommandDTO(String command){
+        return new CommandDto(command);
     }
 
     private ProbeDomain getProbe() {

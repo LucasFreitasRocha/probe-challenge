@@ -1,6 +1,6 @@
-package com.ta2.probechallenge.repository;
+package com.ta2.probechallenge.probe.repository;
 
-import com.ta2.probechallenge.domain.ProbeDomain;
+import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import lombok.AllArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Component;

@@ -1,8 +1,8 @@
-package com.ta2.probechallenge.service;
+package com.ta2.probechallenge.probe.service;
 
-import com.ta2.probechallenge.domain.ProbeDomain;
-import com.ta2.probechallenge.dto.in.CommandDTO;
-import com.ta2.probechallenge.repository.ProbeRepositoryAdapter;
+import com.ta2.probechallenge.probe.domain.ProbeDomain;
+import com.ta2.probechallenge.probe.dto.in.CommandDto;
+import com.ta2.probechallenge.probe.repository.ProbeRepositoryAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +29,8 @@ public class ProbeService {
     );
 
 
-    public ProbeDomain instruction(Long id, CommandDTO commandDTO) {
-        List<String> commands = Arrays.asList(commandDTO.getCommand().split(""));
+    public ProbeDomain instruction(Long id, CommandDto commandDTO) {
+        List<String> commands = Arrays.asList(commandDTO.command().split(""));
         ProbeDomain probeDomain = repository.find(id);
         commands.forEach(command -> {
             if (command.equals("M")) {
@@ -43,7 +43,6 @@ public class ProbeService {
                         ));
             }
         });
-
         return probeDomain;
     }
 

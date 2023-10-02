@@ -1,6 +1,6 @@
-package com.ta2.probechallenge.domain;
+package com.ta2.probechallenge.probe.domain;
 
-import com.ta2.probechallenge.entity.ProbeEntity;
+import com.ta2.probechallenge.probe.entity.ProbeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +18,8 @@ public class ProbeDomain {
     private Integer y;
     private String position;
 
-    public static ProbeDomain from(ProbeEntity probeEntity){
-        return com.ta2.probechallenge.domain.ProbeDomain
+    public static ProbeDomain from(ProbeEntity probeEntity) {
+        return ProbeDomain
                 .builder()
                 .id(probeEntity.getId())
                 .name(probeEntity.getName())

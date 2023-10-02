@@ -1,7 +1,7 @@
-package com.ta2.probechallenge.repository;
+package com.ta2.probechallenge.probe.repository;
 
 
-import com.ta2.probechallenge.entity.ProbeEntity;
+import com.ta2.probechallenge.probe.entity.ProbeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
