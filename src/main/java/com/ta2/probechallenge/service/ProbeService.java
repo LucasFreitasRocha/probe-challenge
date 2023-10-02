@@ -43,6 +43,7 @@ public class ProbeService {
                         ));
             }
         });
+
         return probeDomain;
     }
 
