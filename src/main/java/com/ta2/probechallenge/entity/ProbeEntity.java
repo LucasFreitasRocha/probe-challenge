@@ -20,4 +20,15 @@ public class ProbeEntity {
     private Integer x;
     private Integer y;
     private String position;
+
+    public static ProbeEntity from(com.ta2.probechallenge.domain.ProbeDomain probeDomain){
+        return ProbeEntity
+                .builder()
+                .id(probeDomain.getId())
+                .name(probeDomain.getName())
+                .y(probeDomain.getY())
+                .x(probeDomain.getX())
+                .position(probeDomain.getPosition())
+                .build();
+    }
 }

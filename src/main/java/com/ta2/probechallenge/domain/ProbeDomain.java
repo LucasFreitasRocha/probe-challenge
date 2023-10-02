@@ -1,12 +1,10 @@
 package com.ta2.probechallenge.domain;
 
+import com.ta2.probechallenge.entity.ProbeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Data
 @NoArgsConstructor
@@ -19,4 +17,15 @@ public class ProbeDomain {
     private Integer x;
     private Integer y;
     private String position;
+
+    public static ProbeDomain from(ProbeEntity probeEntity){
+        return com.ta2.probechallenge.domain.ProbeDomain
+                .builder()
+                .id(probeEntity.getId())
+                .name(probeEntity.getName())
+                .y(probeEntity.getY())
+                .x(probeEntity.getX())
+                .position(probeEntity.getPosition())
+                .build();
+    }
 }

@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProbeRepository extends JpaRepository<ProbeEntity, Long> {
+public interface ProbeRepositorySql extends JpaRepository<ProbeEntity, Long> {
 }
