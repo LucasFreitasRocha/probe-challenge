@@ -20,3 +20,5 @@ A sequência de comandos é um conjunto de instruções enviadas da terra para a
     R -> Virar a sonda para a direita (90 graus)
     
 A orientação da sonda dentro do plano cartesiano usa uma rosa dos ventos como referência:
+
+![alt text](./imgs/cardial.png)
