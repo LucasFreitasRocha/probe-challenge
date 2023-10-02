@@ -1,17 +1,16 @@
 package com.ta2.probechallenge.service;
 
-import com.ta2.probechallenge.dto.in.CommandDTO;
-import com.ta2.probechallenge.entity.ProbeEntity;
-import com.ta2.probechallenge.repository.ProbeRepository;
+import com.ta2.probechallenge.probe.domain.ProbeDomain;
+import com.ta2.probechallenge.probe.dto.in.CommandDto;
+import com.ta2.probechallenge.probe.repository.ProbeRepositoryAdapter;
 
+import com.ta2.probechallenge.probe.service.ProbeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -23,7 +22,7 @@ class ProbeServiceTest {
 
 
     @Mock
-    private ProbeRepository repository;
+    private ProbeRepositoryAdapter repository;
 
     private Long id = Long.valueOf(1) ;
 
@@ -33,63 +32,40 @@ class ProbeServiceTest {
 
 
 
-    @Test
-    void findOk() {
-        ProbeEntity expect = getProbe();
-        when(repository.findById(id)).thenReturn(Optional.of(expect)) ;
-        ProbeEntity response = service.find(id);
-        assertEquals(expect.getPosition(),response.getPosition() );
-        assertEquals(expect.getX(),response.getX() );
-        assertEquals(expect.getY(), response.getY());
-        assertEquals(expect.getName(), response.getName());
-        assertEquals(expect.getId(), response.getId());
-    }
 
-    @Test
-    void findThrow() {
-        when(repository.findById(id)).thenReturn(Optional.empty()) ;
-       try{
-           service.find(id);
-       }catch (Exception e){
-           assertEquals(RESPONSETHROW, e.getMessage());
-       }
-    }
+
+
 
     @Test
     void moveWithSingleCommandWhitProbe1(){
-        when(repository.findById(id)).thenReturn(Optional.of(getProbe())) ;
-        ProbeEntity response = service.instruction(id,getCommandDTO("M"));
+        when(repository.find(id)).thenReturn(getProbe()) ;
+        ProbeDomain response = service.instruction(id,getCommandDTO("M"));
         assertEquals(3, response.getY());
 
     }
 
     @Test
     void command1Probe1(){
-        when(repository.findById(id)).thenReturn(Optional.of(getProbe())) ;
-        ProbeEntity response = service.instruction(id,getCommandDTO("LMLMLMLMM"));
+        when(repository.find(id)).thenReturn(getProbe()) ;
+        ProbeDomain response = service.instruction(id,getCommandDTO("LMLMLMLMM"));
         assertEquals(1, response.getX());
         assertEquals(3, response.getY());
         assertEquals("N", response.getPosition());
     }
 
-    public CommandDTO getCommandDTO(String command){
-        CommandDTO commandDTO = new CommandDTO();
-        commandDTO.setCommand(command);
-        return  commandDTO;
+    public CommandDto getCommandDTO(String command){
+        return new CommandDto(command);
     }
 
-    private ProbeEntity getProbe() {
-        ProbeEntity probeEntity = new ProbeEntity();
-        probeEntity.setId(id);
-        probeEntity.setPosition("N");
-        probeEntity.setX(1);
-        probeEntity.setY(2);
-        probeEntity.setName("mars rover");
-        return probeEntity;
+    private ProbeDomain getProbe() {
+        return ProbeDomain.builder()
+                .id(id)
+                .x(1)
+                .y(2)
+                .name("mars rover")
+                .position("N")
+                .build();
     }
 
-    @Test
-    void instruction() {
 
-    }
 }
