@@ -6,4 +6,5 @@ public interface ProbeRepositoryAdapter {
     public ProbeDomain find(Long id);
 
 
+    ProbeDomain create(ProbeDomain probeDomain);
 }

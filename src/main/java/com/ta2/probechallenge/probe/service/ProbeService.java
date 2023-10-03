@@ -2,6 +2,7 @@ package com.ta2.probechallenge.probe.service;
 
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import com.ta2.probechallenge.probe.dto.in.CommandDto;
+import com.ta2.probechallenge.probe.dto.in.CreateProbeDto;
 import com.ta2.probechallenge.probe.repository.ProbeRepositoryAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,17 @@ public class ProbeService {
             "W", "N"
     );
 
+    public ProbeDomain create(CreateProbeDto createProbeDto) {
+        ProbeDomain probeDomain =
+                ProbeDomain
+                        .builder()
+                        .name(createProbeDto.name())
+                        .x(0)
+                        .y(0)
+                        .position("N")
+                        .build();
+        return repository.create(probeDomain);
+    }
 
     public ProbeDomain instruction(Long id, CommandDto commandDTO) {
         List<String> commands = Arrays.asList(commandDTO.command().split(""));

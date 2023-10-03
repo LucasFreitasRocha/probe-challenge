@@ -1,10 +1,11 @@
 package com.ta2.probechallenge.probe.dto.in;
 
-import io.swagger.annotations.ApiModelProperty;
 
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public record CommandDto(
-        @ApiModelProperty(value = "Command", example = "LMLMLMLMM")
+        @Schema( example = "LMLMLMLMM")
         String command
 ) {
 }

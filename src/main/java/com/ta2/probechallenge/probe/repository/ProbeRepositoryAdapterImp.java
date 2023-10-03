@@ -1,6 +1,7 @@
 package com.ta2.probechallenge.probe.repository;
 
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
+import com.ta2.probechallenge.probe.entity.ProbeEntity;
 import lombok.AllArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Component;
@@ -14,5 +15,10 @@ public class ProbeRepositoryAdapterImp implements ProbeRepositoryAdapter{
     public ProbeDomain find(Long id) {
         return ProbeDomain.from(probeRepositorySql.findById(id).orElseThrow(() -> new ObjectNotFoundException(id,
                 "Sonda não encontrada com esse id: " + id)));
+    }
+
+    @Override
+    public ProbeDomain create(ProbeDomain probeDomain) {
+        return ProbeDomain.from(probeRepositorySql.save(ProbeEntity.from(probeDomain)));
     }
 }
