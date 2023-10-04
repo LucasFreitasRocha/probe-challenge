@@ -1,7 +1,8 @@
-package com.ta2.probechallenge.service;
+package com.ta2.probechallenge.probe.service;
 
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import com.ta2.probechallenge.probe.dto.in.CommandDto;
+import com.ta2.probechallenge.probe.dto.out.ProbeDto;
 import com.ta2.probechallenge.probe.repository.ProbeRepositoryAdapter;
 
 import com.ta2.probechallenge.probe.service.ProbeService;
@@ -39,18 +40,18 @@ class ProbeServiceTest {
     @Test
     void moveWithSingleCommandWhitProbe1(){
         when(repository.find(id)).thenReturn(getProbe()) ;
-        ProbeDomain response = service.instruction(id,getCommandDTO("M"));
-        assertEquals(3, response.getY());
+        ProbeDto response = service.instruction(id,getCommandDTO("M"));
+        assertEquals(3, response.y());
 
     }
 
     @Test
     void command1Probe1(){
         when(repository.find(id)).thenReturn(getProbe()) ;
-        ProbeDomain response = service.instruction(id,getCommandDTO("LMLMLMLMM"));
-        assertEquals(1, response.getX());
-        assertEquals(3, response.getY());
-        assertEquals("N", response.getPosition());
+        ProbeDto response = service.instruction(id,getCommandDTO("LMLMLMLMM"));
+        assertEquals(1, response.x());
+        assertEquals(3, response.y());
+        assertEquals("N", response.position());
     }
 
     public CommandDto getCommandDTO(String command){
