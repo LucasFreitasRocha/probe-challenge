@@ -55,7 +55,7 @@ public class ProbeService {
     }
 
     public ProbeDto instruction(Long id, CommandDto commandDTO) {
-        List<String> commands = Arrays.asList(commandDTO.command().split(""));
+        List<String> commands = Arrays.asList(commandDTO.command().toUpperCase().split(""));
         ProbeDomain probeDomain = repository.find(id);
         commands.forEach(command -> {
             if (command.equals("M")) {

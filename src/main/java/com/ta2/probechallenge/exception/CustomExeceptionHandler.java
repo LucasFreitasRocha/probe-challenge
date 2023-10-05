@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -18,6 +20,7 @@ public class CustomExeceptionHandler {
 
 
 
+
     @ExceptionHandler({CustomException.class})
     public ResponseEntity<CustomError> handleCustomException(CustomException ex, HttpServletRequest request) {
         return ResponseEntity.status(ex.getStatus()).body(CustomError.builder()
@@ -28,6 +31,19 @@ public class CustomExeceptionHandler {
                 .build());
     }
 
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<CustomError> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
+        List<ErroInformation> erroInformation = new ArrayList<>();
+        ex.getBindingResult().getAllErrors().forEach(error -> {
+            erroInformation.add(new ErroInformation(error.getCode(), error.getDefaultMessage()));
+        });
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CustomError.builder()
+                .errors(erroInformation)
+                .id(UUID.randomUUID())
+                .date(LocalDateTime.now())
+                .path(request.getRequestURI())
+                .build());
+    }
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<CustomError> handleGenericExecption(Exception ex, HttpServletRequest request) {

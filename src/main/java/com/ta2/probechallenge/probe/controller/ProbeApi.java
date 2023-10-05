@@ -24,6 +24,7 @@ public interface ProbeApi {
     public ResponseEntity<ProbeDto> moveProbe(
             @PathVariable
             @Parameter(name = "id", example = "1") Long id,
+            @Valid
             @RequestBody CommandDto commandDTO);
 
     @Operation(summary = "create a probe")
