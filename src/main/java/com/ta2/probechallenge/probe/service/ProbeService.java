@@ -5,7 +5,7 @@ import com.ta2.probechallenge.probe.dto.in.CommandDto;
 import com.ta2.probechallenge.probe.dto.in.NameProbeDto;
 import com.ta2.probechallenge.probe.dto.out.ProbeDto;
 import com.ta2.probechallenge.probe.repository.ProbeRepositoryAdapter;
-import com.ta2.probechallenge.probe.validation.ProbeValidation;
+import com.ta2.probechallenge.probe.validation.PobreValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class ProbeService {
     @Autowired
     private ProbeRepositoryAdapter repository;
     @Autowired
-    private ProbeValidation validation;
+    private PobreValidation validation;
 
     private final Map<String, String> spinLeft = Map.of(
             "N", "W",
@@ -34,12 +34,10 @@ public class ProbeService {
     );
 
     public ProbeDto create(NameProbeDto nameProbeDto) {
-        String code = genereteCode(nameProbeDto.name());
-        validation.CanCreateWithThisCode(code);
         return ProbeDto.from(repository.save(ProbeDomain
                 .builder()
                 .name(nameProbeDto.name())
-                .code(code)
+                .code(validationCode(nameProbeDto.name()))
                 .x(0)
                 .y(0)
                 .position("N")
@@ -67,7 +65,9 @@ public class ProbeService {
                         ));
             }
         });
-        return ProbeDto.from(probeDomain);
+
+        validation.position(probeDomain);
+        return ProbeDto.from(repository.save(probeDomain));
     }
 
 
@@ -80,10 +80,17 @@ public class ProbeService {
         }
     }
 
-    public void updateName(Long id, NameProbeDto nameProbeDto) {
+    private String validationCode(String name) {
+        String code = genereteCode(name);
+        validation.CanCreateWithThisCode(code);
+        return code;
+    }
+
+    public ProbeDto updateName(Long id, NameProbeDto nameProbeDto) {
         ProbeDomain domain = repository.find(id);
+        domain.setCode(validationCode(nameProbeDto.name()));
         domain.setName(nameProbeDto.name());
-        repository.save(domain);
+        return ProbeDto.from(repository.save(domain));
     }
 
     public ProbeDto findByid(Long id) {

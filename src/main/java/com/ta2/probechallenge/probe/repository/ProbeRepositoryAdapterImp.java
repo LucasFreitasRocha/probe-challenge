@@ -44,7 +44,8 @@ public class ProbeRepositoryAdapterImp implements ProbeRepositoryAdapter{
 
     @Override
     public Optional<ProbeDomain> findByCode(String code) {
-        if( probeRepositorySql.findByCode(code).isEmpty()) return Optional.empty();
-        return Optional.of(ProbeDomain.from(probeRepositorySql.findByCode(code).get()));
+        Optional<ProbeEntity> optional = probeRepositorySql.findByCode(code);
+        if(optional.isEmpty()) return Optional.empty();
+        return Optional.of(ProbeDomain.from(optional.get()));
     }
 }
