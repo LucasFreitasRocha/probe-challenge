@@ -37,7 +37,7 @@ public interface ProbeApi {
 
     @PatchMapping("/{id}")
     @Operation(summary = "Update name probe")
-    public ResponseEntity<Void> updateName(
+    public ResponseEntity<ProbeDto> updateName(
             @PathVariable
             @Parameter(name = "id", example = "1") Long id,
             @RequestBody NameProbeDto nameProbeDto

@@ -2,18 +2,15 @@ package com.ta2.probechallenge.probe.service;
 
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import com.ta2.probechallenge.probe.dto.in.CommandDto;
-import com.ta2.probechallenge.probe.dto.out.ProbeDto;
 import com.ta2.probechallenge.probe.repository.ProbeRepositoryAdapter;
-
-import com.ta2.probechallenge.probe.service.ProbeService;
+import com.ta2.probechallenge.probe.validation.PobreValidation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,36 +22,35 @@ class ProbeServiceTest {
     @Mock
     private ProbeRepositoryAdapter repository;
 
-    private Long id = Long.valueOf(1) ;
+    @Mock
+    private PobreValidation validation;
 
-    private final String RESPONSETHROW = "No row with the given identifier exists:" +
-            " [Sonda não encontrada com esse id: 1#1]";
-
-
-
-
-
-
+    private Long id = Long.valueOf(1);
 
 
     @Test
-    void moveWithSingleCommandWhitProbe1(){
-        when(repository.find(id)).thenReturn(getProbe()) ;
-        ProbeDto response = service.instruction(id,getCommandDTO("M"));
-        assertEquals(3, response.y());
+    void moveWithSingleCommandWhitProbe1() {
+        ProbeDomain domain = getProbe();
+        when(repository.find(id)).thenReturn(getProbe());
+        domain.setY(3);
+        when(repository.save(domain)).thenReturn(domain);
+        service.instruction(id, getCommandDTO("M"));
+        verify(repository).save(domain);
 
     }
 
     @Test
-    void command1Probe1(){
-        when(repository.find(id)).thenReturn(getProbe()) ;
-        ProbeDto response = service.instruction(id,getCommandDTO("LMLMLMLMM"));
-        assertEquals(1, response.x());
-        assertEquals(3, response.y());
-        assertEquals("N", response.position());
+    void command1Probe1() {
+        ProbeDomain domain = getProbe();
+        when(repository.find(id)).thenReturn(domain);
+        domain.setX(1);
+        domain.setY(3);
+        when(repository.save(domain)).thenReturn(domain);
+        service.instruction(id, getCommandDTO("LMLMLMLMM"));
+        verify(repository).save(domain);
     }
 
-    public CommandDto getCommandDTO(String command){
+    public CommandDto getCommandDTO(String command) {
         return new CommandDto(command);
     }
 

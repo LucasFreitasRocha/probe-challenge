@@ -38,9 +38,8 @@ public class ProbeController implements ProbeApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateName(Long id, NameProbeDto nameProbeDto) {
-        service.updateName(id, nameProbeDto);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ProbeDto> updateName(Long id, NameProbeDto nameProbeDto) {
+        return ResponseEntity.ok(service.updateName(id, nameProbeDto));
     }
 
     @Override

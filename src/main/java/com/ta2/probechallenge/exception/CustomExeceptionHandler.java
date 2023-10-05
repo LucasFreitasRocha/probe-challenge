@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ public class CustomExeceptionHandler {
                 .path(request.getRequestURI())
                 .id(UUID.randomUUID())
                 .date(LocalDateTime.now())
-                .erroInformations(ex.getErroInformations())
+                .errors(ex.getErroInformations())
                 .build());
     }
 
@@ -36,7 +35,7 @@ public class CustomExeceptionHandler {
         erroInformation.add(new ErroInformation("INTERNAL_SERVER_ERROR", ex.getMessage()));
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 CustomError.builder()
-                        .erroInformations(erroInformation)
+                        .errors(erroInformation)
                         .id(UUID.randomUUID())
                         .date(LocalDateTime.now())
                         .path(request.getRequestURI())
