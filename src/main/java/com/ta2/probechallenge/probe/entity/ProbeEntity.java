@@ -1,5 +1,6 @@
 package com.ta2.probechallenge.probe.entity;
 
+import com.ta2.probechallenge.planet.entity.PlanetEntity;
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,9 @@ public class ProbeEntity {
     private Integer x;
     private Integer y;
     private String position;
+    @ManyToOne
+    @JoinColumn(name = "planet_id")
+    private PlanetEntity planet;
     @CreationTimestamp
     private LocalDateTime createAt;
     @UpdateTimestamp

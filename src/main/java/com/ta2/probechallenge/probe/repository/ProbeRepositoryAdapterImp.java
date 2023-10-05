@@ -1,30 +1,26 @@
 package com.ta2.probechallenge.probe.repository;
 
-import com.ta2.probechallenge.exception.CustomException;
-import com.ta2.probechallenge.exception.ErroInformation;
+import com.ta2.probechallenge.exception.CustomExceptionService;
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import com.ta2.probechallenge.probe.entity.ProbeEntity;
 import lombok.AllArgsConstructor;
-import org.hibernate.ObjectNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class ProbeRepositoryAdapterImp implements ProbeRepositoryAdapter{
+public class ProbeRepositoryAdapterImp implements ProbeRepositoryAdapter {
 
     private final ProbeRepositorySql probeRepositorySql;
+    private final CustomExceptionService customExceptionService;
+
     @Override
     public ProbeDomain find(Long id) {
-        return ProbeDomain.from(probeRepositorySql.findById(id).orElseThrow(() -> {
-            List<ErroInformation> erroInformations = new ArrayList<>();
-            erroInformations.add(new ErroInformation(HttpStatus.NOT_FOUND.name(), "Not found probe"));
-            return  new CustomException("Not found probe", HttpStatus.NOT_FOUND, erroInformations);
-        }));
+        return ProbeDomain.from(probeRepositorySql.findById(id).orElseThrow(() ->
+                customExceptionService.createNotFound("probe")
+        ));
     }
 
     @Override
@@ -45,7 +41,7 @@ public class ProbeRepositoryAdapterImp implements ProbeRepositoryAdapter{
     @Override
     public Optional<ProbeDomain> findByCode(String code) {
         Optional<ProbeEntity> optional = probeRepositorySql.findByCode(code);
-        if(optional.isEmpty()) return Optional.empty();
+        if (optional.isEmpty()) return Optional.empty();
         return Optional.of(ProbeDomain.from(optional.get()));
     }
 }

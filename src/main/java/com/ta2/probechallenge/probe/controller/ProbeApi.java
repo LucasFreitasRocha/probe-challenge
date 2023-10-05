@@ -2,11 +2,14 @@ package com.ta2.probechallenge.probe.controller;
 
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import com.ta2.probechallenge.probe.dto.in.CommandDto;
+import com.ta2.probechallenge.probe.dto.in.CreateProbeDto;
 import com.ta2.probechallenge.probe.dto.in.NameProbeDto;
+import com.ta2.probechallenge.probe.dto.out.ListProbeDto;
 import com.ta2.probechallenge.probe.dto.out.ProbeDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +28,7 @@ public interface ProbeApi {
 
     @Operation(summary = "create a probe")
     @PostMapping
-    public ResponseEntity<ProbeDto> create(@RequestBody NameProbeDto nameProbeDto);
+    public ResponseEntity<ProbeDto> create(@Valid @RequestBody CreateProbeDto createProbeDto);
 
     @Operation(summary = "get a probe")
     @GetMapping("/{id}")
@@ -53,5 +56,5 @@ public interface ProbeApi {
 
     @GetMapping
     @Operation(summary = "all probes available")
-    public ResponseEntity<List<ProbeDomain>> index();
+    public ResponseEntity<List<ListProbeDto>> index();
 }

@@ -2,7 +2,9 @@ package com.ta2.probechallenge.probe.service;
 
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import com.ta2.probechallenge.probe.dto.in.CommandDto;
+import com.ta2.probechallenge.probe.dto.in.CreateProbeDto;
 import com.ta2.probechallenge.probe.dto.in.NameProbeDto;
+import com.ta2.probechallenge.probe.dto.out.ListProbeDto;
 import com.ta2.probechallenge.probe.dto.out.ProbeDto;
 import com.ta2.probechallenge.probe.repository.ProbeRepositoryAdapter;
 import com.ta2.probechallenge.probe.validation.PobreValidation;
@@ -33,11 +35,12 @@ public class ProbeService {
             "W", "N"
     );
 
-    public ProbeDto create(NameProbeDto nameProbeDto) {
+    public ProbeDto create(CreateProbeDto createProbeDto) {
+
         return ProbeDto.from(repository.save(ProbeDomain
                 .builder()
-                .name(nameProbeDto.name())
-                .code(validationCode(nameProbeDto.name()))
+                .name(createProbeDto.name())
+                .code(validationCode(createProbeDto.name()))
                 .x(0)
                 .y(0)
                 .position("N")
@@ -101,7 +104,8 @@ public class ProbeService {
         repository.delete(repository.find(id));
     }
 
-    public List<ProbeDomain> findAll() {
-        return repository.findAll();
+    public List<ListProbeDto> findAll() {
+
+        return repository.findAll().stream().map(ListProbeDto::from).toList();
     }
 }
