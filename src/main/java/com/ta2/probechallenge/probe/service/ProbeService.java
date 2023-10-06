@@ -55,6 +55,7 @@ public class ProbeService {
     }
 
     public ProbeDto instruction(Long id, CommandDto commandDTO) {
+        validation.command(commandDTO.command());
         List<String> commands = Arrays.asList(commandDTO.command().toUpperCase().split(""));
         ProbeDomain probeDomain = repository.find(id);
         commands.forEach(command -> {

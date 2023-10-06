@@ -7,4 +7,6 @@ public interface PobreValidation {
     void CanCreateWithThisCode(String code);
 
     void position(ProbeDomain probeDomain);
+
+    void command(String command);
 }

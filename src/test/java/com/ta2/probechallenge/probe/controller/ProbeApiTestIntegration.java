@@ -71,6 +71,7 @@ class ProbeApiTestIntegration {
         mockMvc.perform(post("/probe/v1")
                         .content("""
                                 {
+                                  "planet_id": "40b3ebd5-2475-42ec-8e50-38384ae7d80b",
                                   "name": "teste unavalible"
                                 }
                                 """)
@@ -78,7 +79,7 @@ class ProbeApiTestIntegration {
                 )
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.path").value("/probe/v1"))
-                .andExpect(jsonPath("$.errors[0].code").value(CodeExceptionEnum.CREATION_UNAVAILABLE.toString()))
+                .andExpect(jsonPath("$.errors[0].code").value(CodeExceptionEnum.CREATION_UNAVAILABLE.code))
                 .andExpect(jsonPath("$.errors[0].message").value(CodeExceptionEnum.CREATION_UNAVAILABLE.message));
     }
 

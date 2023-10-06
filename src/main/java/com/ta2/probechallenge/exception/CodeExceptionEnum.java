@@ -6,9 +6,10 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum CodeExceptionEnum {
 
-    CREATION_UNAVAILABLE(HttpStatus.BAD_REQUEST, "the creation of this resource is currently unavailable.");
+    CREATION_UNAVAILABLE("invalid.create", "the creation of this resource is currently unavailable."),
+    INVALID_COMMAND("invalid.command", "olny this command is valid: M - move; L - turn left ; R - turn right ");
 
-    public final HttpStatus code;
+    public final String code;
     public final String message;
 
 }
