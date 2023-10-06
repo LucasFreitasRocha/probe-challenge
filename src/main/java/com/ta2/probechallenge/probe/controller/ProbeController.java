@@ -2,7 +2,9 @@ package com.ta2.probechallenge.probe.controller;
 
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import com.ta2.probechallenge.probe.dto.in.CommandDto;
+import com.ta2.probechallenge.probe.dto.in.CreateProbeDto;
 import com.ta2.probechallenge.probe.dto.in.NameProbeDto;
+import com.ta2.probechallenge.probe.dto.out.ListProbeDto;
 import com.ta2.probechallenge.probe.dto.out.ProbeDto;
 import com.ta2.probechallenge.probe.service.ProbeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +28,8 @@ public class ProbeController implements ProbeApi {
     }
 
     @Override
-    public ResponseEntity<ProbeDto> create(NameProbeDto nameProbeDto) {
-        ProbeDto dto = service.create(nameProbeDto);
+    public ResponseEntity<ProbeDto> create(CreateProbeDto CreateProbeDto) {
+        ProbeDto dto = service.create(CreateProbeDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.id()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
@@ -49,7 +51,7 @@ public class ProbeController implements ProbeApi {
     }
 
     @Override
-    public ResponseEntity<List<ProbeDomain>> index() {
+    public ResponseEntity<List<ListProbeDto>> index() {
         return ResponseEntity.ok(service.findAll());
     }
 }

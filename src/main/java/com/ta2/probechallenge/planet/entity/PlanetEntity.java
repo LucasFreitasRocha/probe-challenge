@@ -23,10 +23,10 @@ public class PlanetEntity {
 
     private String name;
     @Builder.Default
-    @OneToMany
+    @OneToMany( mappedBy="planet")
     private List<ProbeEntity> probes = new ArrayList<>();
-
     private Integer area;
+    private Integer maxProbesIn;
 
 
     public static PlanetEntity from(PlanetDomain domain) {
