@@ -1,18 +1,12 @@
 package com.ta2.probechallenge.planet.usecase;
 
-import com.ta2.probechallenge.exception.CodeExceptionEnum;
-import com.ta2.probechallenge.exception.CustomException;
-import com.ta2.probechallenge.exception.ErroInformation;
 import com.ta2.probechallenge.planet.domain.PlanetDomain;
 import com.ta2.probechallenge.planet.dto.in.PlanetCreateDto;
-import com.ta2.probechallenge.planet.dto.out.ListPlanetDto;
 import com.ta2.probechallenge.planet.repository.PlanetRespositoryAdapter;
 import com.ta2.probechallenge.planet.validation.PlanetValidation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +20,7 @@ public class PlanetUseCase {
     private PlanetValidation validation;
 
     public PlanetDomain create(PlanetDomain domain) {
-        validation.ValidationIfHaveAPlanetWithThisName(domain.getName(), null);
+        validation.validationUpdateUniqueName(domain.getName(), null);
         return respositoryAdapter.save(domain);
     }
 
@@ -35,7 +29,7 @@ public class PlanetUseCase {
     }
 
     public PlanetDomain update(UUID id, PlanetCreateDto planetCreateDto) {
-        validation.ValidationIfHaveAPlanetWithThisName(planetCreateDto.name(), id);
+        validation.validationUpdateUniqueName(planetCreateDto.name(), id);
         PlanetDomain  domain = this.find(id);
         domain.setArea(planetCreateDto.area());
         domain.setName(planetCreateDto.name());

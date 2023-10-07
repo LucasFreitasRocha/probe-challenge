@@ -18,15 +18,11 @@ public class PlanetValidationImp implements PlanetValidation {
     private final PlanetRespositoryAdapter respositoryAdapter;
 
     @Override
-    public void ValidationIfHaveAPlanetWithThisName(String name, UUID id) {
+    public void validationUpdateUniqueName(String name, UUID id) {
         Optional<PlanetDomain> optional = respositoryAdapter.findByName(name);
         if (Objects.isNull(id) && optional.isPresent() ||
                 !Objects.isNull(id) && optional.isPresent() && !optional.get().getId().equals(id)) {
             throw CustomException.buildBy(CodeExceptionEnum.CREATION_UNAVAILABLE, HttpStatus.BAD_REQUEST);
-        }
-
-        if (respositoryAdapter.findByName(name).isPresent()) {
-
         }
     }
 }

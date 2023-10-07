@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public interface PlanetValidation {
 
-    public void ValidationIfHaveAPlanetWithThisName(String name, UUID id);
+    public void validationUpdateUniqueName(String name, UUID id);
 
 
 }
