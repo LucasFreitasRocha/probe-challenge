@@ -8,7 +8,10 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +29,9 @@ public class PlanetDomain {
     @Builder.Default
     private List<ProbeDomain> probes = new ArrayList<>();
     private Integer area;
+    private Integer maxProbesIn;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
 
 
     public static PlanetDomain from(PlanetEntity entity) {
@@ -36,6 +42,9 @@ public class PlanetDomain {
                 .probes((Objects.isNull(entity.getProbes()))
                         ? new ArrayList<>() : entity.getProbes().stream().map(ProbeDomain::from).toList())
                 .area(entity.getArea())
+                .maxProbesIn(entity.getMaxProbesIn())
+                .createAt(entity.getCreateAt())
+                .updateAt(entity.getUpdateAt())
                 .build();
     }
 
