@@ -12,7 +12,7 @@ public record PlanetCreateDto(
         @NotBlank(message = "The name cannot be blank")
         @Schema(name = "name", example = "mars")
         String name,
-        @Max(value = 5, message = "Max probes in a planet is five")
+        @Max(value = 10, message = "Max probes in a planet is ten")
         @Min(value = 1, message = "Min probes in a planet is one")
         @JsonProperty("max_probes_in")
         Integer maxProbesIn,

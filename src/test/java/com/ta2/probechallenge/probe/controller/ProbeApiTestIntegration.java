@@ -62,6 +62,22 @@ class ProbeApiTestIntegration {
     }
 
     @Test
+    void validationCreateNotUUID() throws Exception {
+        mockMvc.perform(post("/probe/v1")
+                .content("""
+                                {
+                                  "planet_id": "teste",
+                                  "name": "teste"
+                                }
+                                """)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.path").value("/probe/v1"))
+                .andExpect(jsonPath("$.errors[0].code").value("Pattern"))
+                .andExpect(jsonPath("$.errors[0].message").value("Send a valid UUID"));
+    }
+
+    @Test
     void createUnavalible() throws Exception {
         probeRepositorySql.save(ProbeEntity.builder()
                 .name("test unavalible")
