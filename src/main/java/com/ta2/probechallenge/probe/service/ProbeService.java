@@ -35,23 +35,10 @@ public class ProbeService {
     private PobreValidation validation;
 
     public ProbeDto create(CreateProbeDto createProbeDto) {
-
-        return ProbeDto.from(repository.save(ProbeDomain
-                .builder()
-                .name(createProbeDto.name())
-                .code(validationCode(createProbeDto.name()))
-                .x(0)
-                .y(0)
-                .position("N")
-                .build()));
+        return ProbeDto.from(repository.save(validation.create(createProbeDto)));
     }
 
-    private String genereteCode(String name) {
-        name = name.trim();
-        StringBuilder codeBuilder = new StringBuilder();
-        Arrays.stream(name.split(" ")).toList().forEach(word -> codeBuilder.append(word.toUpperCase().charAt(0)));
-        return codeBuilder.toString();
-    }
+
 
     public ProbeDto instruction(Long id, CommandDto commandDTO) {
         validation.command(commandDTO.command());
@@ -83,15 +70,11 @@ public class ProbeService {
         }
     }
 
-    private String validationCode(String name) {
-        String code = genereteCode(name);
-        validation.CanCreateWithThisCode(code);
-        return code;
-    }
+
 
     public ProbeDto updateName(Long id, NameProbeDto nameProbeDto) {
         ProbeDomain domain = repository.find(id);
-        domain.setCode(validationCode(nameProbeDto.name()));
+        domain.setCode(validation.canUseThisCode(nameProbeDto.name()));
         domain.setName(nameProbeDto.name());
         return ProbeDto.from(repository.save(domain));
     }

@@ -7,8 +7,8 @@ import java.util.UUID;
 
 public interface PlanetValidation {
 
-    public void validationUpdateUniqueName(String name, UUID id);
-
+    void validationUpdateUniqueName(String name, UUID id);
+    PlanetDomain canUseThisPlanet(UUID id);
 
     PlanetDomain canDelete(UUID id);
 }

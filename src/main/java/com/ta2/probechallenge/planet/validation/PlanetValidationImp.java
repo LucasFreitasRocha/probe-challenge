@@ -24,8 +24,18 @@ public class PlanetValidationImp implements PlanetValidation {
         Optional<PlanetDomain> optional = respositoryAdapter.findByName(name);
         if (Objects.isNull(id) && optional.isPresent() ||
                 !Objects.isNull(id) && optional.isPresent() && !optional.get().getId().equals(id)) {
-            throw CustomException.buildBy(CodeExceptionEnum.CREATION_OR_UPDATE_UNAVAILABLE, ResourceName.PLANET.getValue(), HttpStatus.BAD_REQUEST);
+            throw CustomException.buildBy(CodeExceptionEnum.CREATION_OR_UPDATE_UNAVAILABLE,
+                    ResourceName.PLANET.getValue(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public PlanetDomain canUseThisPlanet(UUID id) {
+        PlanetDomain domain = respositoryAdapter.find(id);
+        if(domain.getProbes().size() >= domain.getMaxProbesIn())
+            throw  CustomException.buildBy(CodeExceptionEnum.MAX_PROBES_ON_PLANET,
+                    ResourceName.PLANET.getValue(),HttpStatus.BAD_REQUEST);
+        return domain;
     }
 
     @Override

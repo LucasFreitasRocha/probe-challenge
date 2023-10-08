@@ -2,6 +2,7 @@ package com.ta2.probechallenge.probe.dto.out;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ta2.probechallenge.planet.dto.out.ListPlanetDto;
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import lombok.Builder;
 
@@ -15,6 +16,7 @@ public record ProbeDto(
         Integer x,
         Integer y,
         String position,
+        ListPlanetDto planet,
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @JsonProperty("create_at")
         LocalDateTime createAt,
@@ -24,6 +26,10 @@ public record ProbeDto(
 ) {
 
     public static ProbeDto from(ProbeDomain probeDomain) {
+        ListPlanetDto planetDto = ListPlanetDto.builder()
+                .id(probeDomain.getPlanet().getId())
+                .name(probeDomain.getPlanet().getName())
+                .build();
         return ProbeDto
                 .builder()
                 .id(probeDomain.getId())
@@ -32,6 +38,7 @@ public record ProbeDto(
                 .y(probeDomain.getY())
                 .x(probeDomain.getX())
                 .position(probeDomain.getPosition())
+                .planet(planetDto)
                 .createAt(probeDomain.getCreateAt())
                 .updateAt(probeDomain.getUpdateAt())
                 .build();

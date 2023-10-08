@@ -44,6 +44,7 @@ public class ProbeEntity {
                 .id(probeDomain.getId())
                 .name(probeDomain.getName())
                 .code(probeDomain.getCode())
+                .planet(PlanetEntity.from(probeDomain.getPlanet()))
                 .y(probeDomain.getY())
                 .x(probeDomain.getX())
                 .position(probeDomain.getPosition())

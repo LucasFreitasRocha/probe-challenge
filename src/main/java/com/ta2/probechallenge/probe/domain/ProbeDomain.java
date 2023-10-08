@@ -1,9 +1,11 @@
 package com.ta2.probechallenge.probe.domain;
 
 import com.ta2.probechallenge.planet.domain.PlanetDomain;
-import com.ta2.probechallenge.planet.entity.PlanetEntity;
 import com.ta2.probechallenge.probe.entity.ProbeEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +29,7 @@ public class ProbeDomain {
     public static ProbeDomain from(ProbeEntity probeEntity) {
         PlanetDomain planetDomain = new PlanetDomain();
         planetDomain.setId(probeEntity.getPlanet().getId());
+        planetDomain.setName(probeEntity.getPlanet().getName());
         planetDomain.setArea(probeEntity.getPlanet().getArea());
         planetDomain.setMaxProbesIn(probeEntity.getPlanet().getMaxProbesIn());
         return ProbeDomain

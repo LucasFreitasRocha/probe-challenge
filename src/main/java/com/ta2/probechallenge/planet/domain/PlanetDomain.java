@@ -2,7 +2,6 @@ package com.ta2.probechallenge.planet.domain;
 
 import com.ta2.probechallenge.planet.entity.PlanetEntity;
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
-import com.ta2.probechallenge.probe.entity.ProbeEntity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
