@@ -335,6 +335,35 @@ class ProbeApiTestIntegration {
 
 
     @Test
+    void probeFinalSamePosition() throws Exception {
+        ProbeEntity probeEntity = probeRepositorySql.save(ProbeEntity.builder()
+                .name("valid position")
+                .x(4)
+                .y(4)
+                .position("N")
+                .planet(getPlanet("MARS"))
+                .code("VP")
+                .build());
+        StringBuilder pathBuilder = new StringBuilder();
+        pathBuilder.append("/probe/v1/");
+        pathBuilder.append(probeEntity.getId());
+        mockMvc.perform(post(pathBuilder.toString())
+                .content("""
+                                {
+                                 "command": "MRRM"
+                                }
+                                """)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("valid position"))
+                .andExpect(jsonPath("$.code").value("VP"))
+                .andExpect(jsonPath("$.x").value(4))
+                .andExpect(jsonPath("$.y").value(4))
+                .andExpect(jsonPath("$.position").value("S"));
+    }
+
+
+    @Test
     void updateName() throws Exception {
         ProbeEntity probeEntity = probeRepositorySql.save(ProbeEntity.builder()
                 .name("test probe 1")
