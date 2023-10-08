@@ -92,7 +92,7 @@ class ProbeApiTestIntegration {
 
     @Test
     void createProbeOnPlanetThatHasReachedMaxProbesOn() throws Exception {
-        PlanetEntity planetEntity =planetRepositorySql.save( PlanetEntity.builder()
+        PlanetEntity planetEntity = planetRepositorySql.save(PlanetEntity.builder()
                 .name("teste")
                 .maxProbesIn(0)
                 .build());
@@ -240,6 +240,101 @@ class ProbeApiTestIntegration {
 
 
     @Test
+    public void commandLetProbeInPosition00() throws Exception {
+        ProbeEntity probeEntity = probeRepositorySql.save(ProbeEntity.builder()
+                .name("position00")
+                .x(0)
+                .y(1)
+                .position("S")
+                .planet(getPlanet("MARS"))
+                .code("TP2")
+                .build());
+        StringBuilder pathBuilder = new StringBuilder();
+        pathBuilder.append("/probe/v1/");
+        pathBuilder.append(probeEntity.getId());
+        mockMvc.perform(post(pathBuilder.toString())
+                        .content("""
+                                {
+                                  "command": "M"
+                                }
+                                """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.path").value(pathBuilder.toString()))
+                .andExpect(jsonPath("$.errors[0].code").value(CodeExceptionEnum.INVALID_POSITION.code))
+                .andExpect(jsonPath("$.errors[0].message")
+                        .value(CodeExceptionEnum.INVALID_POSITION.message
+                                .formatted("The [0,0] position is reserved for the landing of the probes")));
+    }
+
+
+    @Test
+    public void commandLetProbeInInvalidPosition() throws Exception {
+        PlanetEntity planetEntity = getPlanet("MARS");
+        probeRepositorySql.save(ProbeEntity.builder()
+                .name("test probe 2")
+                .x(5)
+                .y(1)
+                .position("N")
+                .planet(planetEntity)
+                .code("TP2")
+                .build());
+        ProbeEntity probeEntity = probeRepositorySql.save(ProbeEntity.builder()
+                .name("invalid position")
+                .x(3)
+                .y(3)
+                .position("E")
+                .planet(planetEntity)
+                .code("IP")
+                .build());
+        StringBuilder pathBuilder = new StringBuilder();
+        pathBuilder.append("/probe/v1/");
+        pathBuilder.append(probeEntity.getId());
+        mockMvc.perform(post(pathBuilder.toString())
+                        .content("""
+                                {
+                                 "command": "MMRMMRMRRML"
+                                }
+                                """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.path").value(pathBuilder.toString()))
+                .andExpect(jsonPath("$.errors[0].code").value(CodeExceptionEnum.INVALID_POSITION.code))
+                .andExpect(jsonPath("$.errors[0].message")
+                        .value(CodeExceptionEnum.INVALID_POSITION.message
+                                .formatted("Already has a probe in this position")));
+    }
+
+    @Test
+    public void commandWillLetProbeOutsideAreaOfPlanet() throws Exception {
+        ProbeEntity probeEntity = probeRepositorySql.save(ProbeEntity.builder()
+                .name("invalid position")
+                .x(4)
+                .y(4)
+                .position("N")
+                .planet(getPlanet("MARS"))
+                .code("IP")
+                .build());
+        StringBuilder pathBuilder = new StringBuilder();
+        pathBuilder.append("/probe/v1/");
+        pathBuilder.append(probeEntity.getId());
+        mockMvc.perform(post(pathBuilder.toString())
+                        .content("""
+                                {
+                                 "command": "MM"
+                                }
+                                """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.path").value(pathBuilder.toString()))
+                .andExpect(jsonPath("$.errors[0].code").value(CodeExceptionEnum.INVALID_POSITION.code))
+                .andExpect(jsonPath("$.errors[0].message")
+                        .value(CodeExceptionEnum.INVALID_POSITION.message
+                                .formatted("the probes try to pass area of planet")));
+    }
+
+
+    @Test
     void updateName() throws Exception {
         ProbeEntity probeEntity = probeRepositorySql.save(ProbeEntity.builder()
                 .name("test probe 1")
@@ -249,7 +344,6 @@ class ProbeApiTestIntegration {
                 .position("N")
                 .code("TP1")
                 .build());
-
         StringBuilder pathBuilder = new StringBuilder();
         pathBuilder.append("/probe/v1/");
         pathBuilder.append(probeEntity.getId());

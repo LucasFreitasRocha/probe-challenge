@@ -1,7 +1,6 @@
 package com.ta2.probechallenge.planet.entity;
 
 import com.ta2.probechallenge.planet.domain.PlanetDomain;
-import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import com.ta2.probechallenge.probe.entity.ProbeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,7 +28,7 @@ public class PlanetEntity {
     private String name;
     @Builder.Default
     @OneToMany(mappedBy = "planet")
-    private List<ProbeEntity> probes = new ArrayList<>() ;
+    private List<ProbeEntity> probes = new ArrayList<>();
     private Integer area;
     private Integer maxProbesIn;
     @CreationTimestamp

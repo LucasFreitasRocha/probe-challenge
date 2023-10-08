@@ -39,7 +39,6 @@ public class ProbeService {
     }
 
 
-
     public ProbeDto instruction(Long id, CommandDto commandDTO) {
         validation.command(commandDTO.command());
         List<String> commands = Arrays.asList(commandDTO.command().toUpperCase().split(""));
@@ -69,7 +68,6 @@ public class ProbeService {
             case "W" -> probeDomain.setX(probeDomain.getX() - 1);
         }
     }
-
 
 
     public ProbeDto updateName(Long id, NameProbeDto nameProbeDto) {

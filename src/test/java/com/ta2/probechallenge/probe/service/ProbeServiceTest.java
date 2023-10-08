@@ -64,7 +64,7 @@ class ProbeServiceTest {
                         .name("MARS")
                         .maxProbesIn(5)
                         .area(5)
-                .build();
+                        .build();
         return ProbeDomain.builder()
                 .id(id)
                 .x(1)

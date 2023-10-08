@@ -54,7 +54,7 @@ public class ProbeValidationImp implements PobreValidation {
     @Override
     public ProbeDomain create(CreateProbeDto createProbeDto) {
         String code = this.canUseThisCode(createProbeDto.name());
-        PlanetDomain  planet = planetValidation.canUseThisPlanet(UUID.fromString(createProbeDto.idPlanet()));
+        PlanetDomain planet = planetValidation.canUseThisPlanet(UUID.fromString(createProbeDto.idPlanet()));
         return ProbeDomain
                 .builder()
                 .name(createProbeDto.name())
@@ -68,7 +68,7 @@ public class ProbeValidationImp implements PobreValidation {
 
     @Override
     public void position(ProbeDomain probeDomain) {
-
+        planetValidation.validationPositionOfProbeOn(probeDomain);
     }
 
 
