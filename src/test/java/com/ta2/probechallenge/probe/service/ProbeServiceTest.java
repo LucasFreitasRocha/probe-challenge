@@ -1,5 +1,6 @@
 package com.ta2.probechallenge.probe.service;
 
+import com.ta2.probechallenge.planet.domain.PlanetDomain;
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import com.ta2.probechallenge.probe.dto.in.CommandDto;
 import com.ta2.probechallenge.probe.repository.ProbeRepositoryAdapter;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.UUID;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,12 +58,20 @@ class ProbeServiceTest {
     }
 
     private ProbeDomain getProbe() {
+        PlanetDomain planetDomain =
+                PlanetDomain.builder()
+                        .id(UUID.fromString("40b3ebd5-2475-42ec-8e50-38384ae7d80b"))
+                        .name("MARS")
+                        .maxProbesIn(5)
+                        .area(5)
+                        .build();
         return ProbeDomain.builder()
                 .id(id)
                 .x(1)
                 .y(2)
                 .name("mars rover")
                 .position("N")
+                .planet(planetDomain)
                 .build();
     }
 

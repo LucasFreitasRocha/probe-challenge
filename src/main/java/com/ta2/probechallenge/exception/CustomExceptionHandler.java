@@ -59,6 +59,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<CustomError> handleGenericException(Exception ex, HttpServletRequest request) {
+        ex.printStackTrace();
         List<ErroInformation> erroInformation = new ArrayList<>();
         erroInformation.add(new ErroInformation("INTERNAL_SERVER_ERROR", ex.getMessage()));
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
