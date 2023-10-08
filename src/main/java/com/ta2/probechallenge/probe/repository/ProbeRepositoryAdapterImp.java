@@ -1,9 +1,12 @@
 package com.ta2.probechallenge.probe.repository;
 
-import com.ta2.probechallenge.exception.CustomExceptionService;
+import com.ta2.probechallenge.enums.ResourceName;
+import com.ta2.probechallenge.exception.CodeExceptionEnum;
+import com.ta2.probechallenge.exception.CustomException;
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import com.ta2.probechallenge.probe.entity.ProbeEntity;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,13 +17,13 @@ import java.util.Optional;
 public class ProbeRepositoryAdapterImp implements ProbeRepositoryAdapter {
 
     private final ProbeRepositorySql probeRepositorySql;
-    private final CustomExceptionService customExceptionService;
 
     @Override
     public ProbeDomain find(Long id) {
-        return ProbeDomain.from(probeRepositorySql.findById(id).orElseThrow(() ->
-                customExceptionService.createNotFound("probe")
-        ));
+        return ProbeDomain.from(probeRepositorySql.findById(id).orElseThrow(
+                () -> {
+                    throw CustomException.buildBy(CodeExceptionEnum.NOT_FOUND, ResourceName.PROBE.getValue(), HttpStatus.NOT_FOUND);
+                }));
     }
 
     @Override

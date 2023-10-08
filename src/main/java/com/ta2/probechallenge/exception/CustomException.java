@@ -25,10 +25,10 @@ public class CustomException extends RuntimeException{
         this.erroInformations = erroInformations;
     }
 
-    public static CustomException buildBy(CodeExceptionEnum codeExceptionEnum, HttpStatus status){
+    public static CustomException buildBy(CodeExceptionEnum codeExceptionEnum,String resource,  HttpStatus status){
         return CustomException.builder()
                 .status(status)
-                .erroInformations(List.of(new ErroInformation(codeExceptionEnum.code, codeExceptionEnum.message)))
+                .erroInformations(List.of(new ErroInformation(codeExceptionEnum.code, codeExceptionEnum.message.formatted(resource))))
                 .build();
     }
 }

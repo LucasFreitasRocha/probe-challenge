@@ -12,7 +12,7 @@ public interface PlanetRespositoryAdapter {
 
     PlanetDomain save(PlanetDomain planetDomain);
 
-    void delete(UUID id);
+    void delete(PlanetDomain planetDomain);
 
     List<PlanetDomain> findAll();
 

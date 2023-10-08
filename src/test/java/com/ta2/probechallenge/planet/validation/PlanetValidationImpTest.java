@@ -4,12 +4,14 @@ import com.ta2.probechallenge.exception.CodeExceptionEnum;
 import com.ta2.probechallenge.exception.CustomException;
 import com.ta2.probechallenge.planet.domain.PlanetDomain;
 import com.ta2.probechallenge.planet.repository.PlanetRespositoryAdapter;
+import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,6 +45,19 @@ class PlanetValidationImpTest {
         when(respositoryAdapter.findByName(NAME)).thenReturn(Optional.of(PlanetDomain.builder().id(ID).build()));
         try {
             validation.validationUpdateUniqueName(NAME, UUID.randomUUID());
+        }catch (Exception e){
+            assertTrue(e instanceof CustomException);
+        }
+    }
+
+    @Test
+    public void shoudThrowWhenPlanetHasProbes(){
+        when(respositoryAdapter.find(ID)).thenReturn(PlanetDomain.builder()
+                .id(ID)
+                .probes(List.of(ProbeDomain.builder().build()))
+                .build());
+        try {
+            validation.canDelete(ID);
         }catch (Exception e){
             assertTrue(e instanceof CustomException);
         }

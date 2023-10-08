@@ -1,5 +1,6 @@
 package com.ta2.probechallenge.planet.usecase;
 
+import com.ta2.probechallenge.exception.CustomException;
 import com.ta2.probechallenge.planet.domain.PlanetDomain;
 import com.ta2.probechallenge.planet.dto.in.PlanetCreateDto;
 import com.ta2.probechallenge.planet.repository.PlanetRespositoryAdapter;
@@ -38,7 +39,8 @@ public class PlanetUseCase {
     }
 
     public void delete(UUID id) {
-        respositoryAdapter.delete(id);
+        PlanetDomain domain = validation.canDelete(id);
+        respositoryAdapter.delete(domain);
     }
 
     public List<PlanetDomain> findAll() {

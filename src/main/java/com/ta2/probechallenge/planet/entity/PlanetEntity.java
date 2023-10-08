@@ -47,8 +47,7 @@ public class PlanetEntity {
                 .maxProbesIn(domain.getMaxProbesIn())
                 .createAt(domain.getCreateAt())
                 .updateAt(domain.getUpdateAt())
-                .probes((Objects.isNull(domain.getProbes()))
-                        ? new ArrayList<>() : domain.getProbes().stream().map(ProbeEntity::from).toList())
+                .probes(domain.getProbes().stream().map(ProbeEntity::from).toList())
                 .area(domain.getArea())
                 .build();
     }

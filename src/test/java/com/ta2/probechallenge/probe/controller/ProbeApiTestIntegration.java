@@ -1,8 +1,8 @@
 package com.ta2.probechallenge.probe.controller;
 
 import com.ta2.probechallenge.ProbechallengeApplication;
+import com.ta2.probechallenge.enums.ResourceName;
 import com.ta2.probechallenge.exception.CodeExceptionEnum;
-import com.ta2.probechallenge.probe.dto.out.ProbeDto;
 import com.ta2.probechallenge.probe.entity.ProbeEntity;
 import com.ta2.probechallenge.probe.repository.ProbeRepositorySql;
 import org.junit.jupiter.api.AfterEach;
@@ -17,9 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.List;
-
 import static com.ta2.probechallenge.UtilHelper.getContentFile;
+import static com.ta2.probechallenge.exception.CodeExceptionEnum.NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,11 +30,11 @@ class ProbeApiTestIntegration {
     @Autowired
     WebApplicationContext webApplicationContext;
 
+    MockMvc mockMvc;
 
     @Autowired
     ProbeRepositorySql probeRepositorySql;
 
-    MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
@@ -43,7 +42,7 @@ class ProbeApiTestIntegration {
     }
 
     @AfterEach
-    void setDown(){
+    void setDown() {
         probeRepositorySql.deleteAll();
     }
 
@@ -79,8 +78,8 @@ class ProbeApiTestIntegration {
                 )
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.path").value("/probe/v1"))
-                .andExpect(jsonPath("$.errors[0].code").value(CodeExceptionEnum.CREATION_UNAVAILABLE.code))
-                .andExpect(jsonPath("$.errors[0].message").value(CodeExceptionEnum.CREATION_UNAVAILABLE.message));
+                .andExpect(jsonPath("$.errors[0].code").value(CodeExceptionEnum.CREATION_OR_UPDATE_UNAVAILABLE.code))
+                .andExpect(jsonPath("$.errors[0].message").value(CodeExceptionEnum.CREATION_OR_UPDATE_UNAVAILABLE.message.formatted(ResourceName.PROBE.getValue())));
     }
 
 
@@ -90,12 +89,12 @@ class ProbeApiTestIntegration {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.path").value("/probe/v1/99"))
-                .andExpect(jsonPath("$.errors[0].code").value("NOT_FOUND"))
-                .andExpect(jsonPath("$.errors[0].message").value("Not found probe"));
+                .andExpect(jsonPath("$.errors[0].code").value(NOT_FOUND.code))
+                .andExpect(jsonPath("$.errors[0].message").value(NOT_FOUND.message.formatted(ResourceName.PROBE.getValue())));
     }
 
     @Test
-    public void delete() throws Exception {
+    public void deleteTest() throws Exception {
         ProbeEntity probeEntity = probeRepositorySql.save(ProbeEntity.builder()
                 .name("test delete")
                 .code("TD")
@@ -103,11 +102,12 @@ class ProbeApiTestIntegration {
         StringBuilder pathBuilder = new StringBuilder();
         pathBuilder.append("/probe/v1/");
         pathBuilder.append(probeEntity.getId());
+        mockMvc.perform(delete(pathBuilder.toString()).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
         mockMvc.perform(get(pathBuilder.toString())
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
-
 
 
     @Test
@@ -193,6 +193,7 @@ class ProbeApiTestIntegration {
                 .andExpect(jsonPath("$.position").value("N"));
 
     }
+
     @Test
     void size2() throws Exception {
         probeRepositorySql.save(ProbeEntity.builder()
@@ -209,10 +210,10 @@ class ProbeApiTestIntegration {
                 .position("E")
                 .code("TP2")
                 .build());
-         mockMvc.perform(get("/probe/v1")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/probe/v1")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.length()").value(2));
+                .andExpect(jsonPath("$.length()").value(2));
 
     }
 
