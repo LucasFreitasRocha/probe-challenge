@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.ObjectError;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @ControllerAdvice
 @RequiredArgsConstructor
-public class CustomExeceptionHandler {
+public class CustomExceptionHandler {
 
 
 
@@ -44,9 +44,22 @@ public class CustomExeceptionHandler {
                 .path(request.getRequestURI())
                 .build());
     }
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    public ResponseEntity<CustomError> handleJsonParseException(Exception ex, HttpServletRequest request) {
+        List<ErroInformation> erroInformation = new ArrayList<>();
+        erroInformation.add(new ErroInformation("json.parse", ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                CustomError.builder()
+                        .errors(erroInformation)
+                        .id(UUID.randomUUID())
+                        .date(LocalDateTime.now())
+                        .path(request.getRequestURI())
+                        .build()
+        );
+    }
 
     @ExceptionHandler({Exception.class})
-    public ResponseEntity<CustomError> handleGenericExecption(Exception ex, HttpServletRequest request) {
+    public ResponseEntity<CustomError> handleGenericException(Exception ex, HttpServletRequest request) {
         List<ErroInformation> erroInformation = new ArrayList<>();
         erroInformation.add(new ErroInformation("INTERNAL_SERVER_ERROR", ex.getMessage()));
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
