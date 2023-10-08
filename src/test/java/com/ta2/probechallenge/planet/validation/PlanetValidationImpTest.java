@@ -1,6 +1,5 @@
 package com.ta2.probechallenge.planet.validation;
 
-import com.ta2.probechallenge.exception.CodeExceptionEnum;
 import com.ta2.probechallenge.exception.CustomException;
 import com.ta2.probechallenge.planet.domain.PlanetDomain;
 import com.ta2.probechallenge.planet.repository.PlanetRespositoryAdapter;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,34 +30,35 @@ class PlanetValidationImpTest {
 
     //  should throw exception when pass a name that Already to create
     @Test
-    public void shouldThrowCreate(){
+    public void shouldThrowCreate() {
         when(respositoryAdapter.findByName(NAME)).thenReturn(Optional.of(PlanetDomain.builder().id(ID).build()));
         try {
             validation.validationUpdateUniqueName(NAME, null);
-        }catch (Exception e){
+        } catch (Exception e) {
             assertTrue(e instanceof CustomException);
         }
     }
+
     //should Throw When Pass A Name that Already exist And Not is Same Planet
     @Test
-    public void shouldThrowWithNamePassed(){
+    public void shouldThrowWithNamePassed() {
         when(respositoryAdapter.findByName(NAME)).thenReturn(Optional.of(PlanetDomain.builder().id(ID).build()));
         try {
             validation.validationUpdateUniqueName(NAME, UUID.randomUUID());
-        }catch (Exception e){
+        } catch (Exception e) {
             assertTrue(e instanceof CustomException);
         }
     }
 
     @Test
-    public void shoudThrowWhenPlanetHasProbes(){
+    public void shoudThrowWhenPlanetHasProbes() {
         when(respositoryAdapter.find(ID)).thenReturn(PlanetDomain.builder()
                 .id(ID)
                 .probes(List.of(ProbeDomain.builder().build()))
                 .build());
         try {
             validation.canDelete(ID);
-        }catch (Exception e){
+        } catch (Exception e) {
             assertTrue(e instanceof CustomException);
         }
     }

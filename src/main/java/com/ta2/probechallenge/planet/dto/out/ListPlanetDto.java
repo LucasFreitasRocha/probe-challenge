@@ -10,7 +10,7 @@ public record ListPlanetDto(
         UUID id,
         String name
 ) {
-    public static ListPlanetDto from(PlanetDomain domain){
+    public static ListPlanetDto from(PlanetDomain domain) {
         return ListPlanetDto.builder()
                 .id(domain.getId())
                 .name(domain.getName())

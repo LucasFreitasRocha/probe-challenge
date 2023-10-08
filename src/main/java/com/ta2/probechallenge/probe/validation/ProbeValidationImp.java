@@ -22,10 +22,11 @@ public class ProbeValidationImp implements PobreValidation {
 
     @Autowired
     private ProbeRepositoryAdapter repositoryAdapter;
+
     @Override
-    public void CanCreateWithThisCode(String code){
-        if(repositoryAdapter.findByCode(code).isPresent()){
-           throw  CustomException.buildBy(CREATION_OR_UPDATE_UNAVAILABLE, ResourceName.PROBE.getValue(), HttpStatus.BAD_REQUEST);
+    public void CanCreateWithThisCode(String code) {
+        if (repositoryAdapter.findByCode(code).isPresent()) {
+            throw CustomException.buildBy(CREATION_OR_UPDATE_UNAVAILABLE, ResourceName.PROBE.getValue(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -38,10 +39,10 @@ public class ProbeValidationImp implements PobreValidation {
     public void command(String command) {
         Pattern pattern = Pattern.compile("[^mrl]", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(command);
-        if(matcher.find()){
+        if (matcher.find()) {
             List<ErroInformation> erros = new ArrayList<>();
             erros.add(new ErroInformation(INVALID_COMMAND.code, INVALID_COMMAND.message));
-            throw  new CustomException(INVALID_COMMAND.message, HttpStatus.BAD_REQUEST, erros);
+            throw new CustomException(INVALID_COMMAND.message, HttpStatus.BAD_REQUEST, erros);
         }
     }
 }

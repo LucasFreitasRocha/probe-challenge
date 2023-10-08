@@ -64,13 +64,13 @@ class ProbeApiTestIntegration {
     @Test
     void validationCreateNotUUID() throws Exception {
         mockMvc.perform(post("/probe/v1")
-                .content("""
+                        .content("""
                                 {
                                   "planet_id": "teste",
                                   "name": "teste"
                                 }
                                 """)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.path").value("/probe/v1"))
                 .andExpect(jsonPath("$.errors[0].code").value("Pattern"))

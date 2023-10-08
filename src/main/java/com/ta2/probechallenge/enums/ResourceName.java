@@ -5,11 +5,11 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum ResourceName{
+public enum ResourceName {
 
-        PROBE("probe"),
-        PLANET("planet");
+    PROBE("probe"),
+    PLANET("planet");
 
-        private final String value;
+    private final String value;
 
 }

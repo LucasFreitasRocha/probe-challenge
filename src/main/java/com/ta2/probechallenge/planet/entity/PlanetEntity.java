@@ -13,7 +13,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "planet")
@@ -28,7 +27,7 @@ public class PlanetEntity {
     @Column(unique = true)
     private String name;
     @Builder.Default
-    @OneToMany( mappedBy="planet")
+    @OneToMany(mappedBy = "planet")
     private List<ProbeEntity> probes = new ArrayList<>();
     private Integer area;
     private Integer maxProbesIn;
@@ -36,7 +35,6 @@ public class PlanetEntity {
     private LocalDateTime createAt;
     @UpdateTimestamp
     private LocalDateTime updateAt;
-
 
 
     public static PlanetEntity from(PlanetDomain domain) {
