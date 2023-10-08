@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -24,4 +25,10 @@ public class CustomException extends RuntimeException{
         this.erroInformations = erroInformations;
     }
 
+    public static CustomException buildBy(CodeExceptionEnum codeExceptionEnum,String resource,  HttpStatus status){
+        return CustomException.builder()
+                .status(status)
+                .erroInformations(List.of(new ErroInformation(codeExceptionEnum.code, codeExceptionEnum.message.formatted(resource))))
+                .build();
+    }
 }

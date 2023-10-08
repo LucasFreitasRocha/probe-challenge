@@ -1,5 +1,6 @@
 package com.ta2.probechallenge.probe.validation;
 
+import com.ta2.probechallenge.enums.ResourceName;
 import com.ta2.probechallenge.exception.CustomException;
 import com.ta2.probechallenge.exception.ErroInformation;
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.ta2.probechallenge.exception.CodeExceptionEnum.CREATION_UNAVAILABLE;
+import static com.ta2.probechallenge.exception.CodeExceptionEnum.CREATION_OR_UPDATE_UNAVAILABLE;
 import static com.ta2.probechallenge.exception.CodeExceptionEnum.INVALID_COMMAND;
 
 @Component
@@ -24,9 +25,7 @@ public class ProbeValidationImp implements PobreValidation {
     @Override
     public void CanCreateWithThisCode(String code){
         if(repositoryAdapter.findByCode(code).isPresent()){
-            List<ErroInformation> erroInformationList  = new ArrayList<>();
-            erroInformationList.add(new ErroInformation(CREATION_UNAVAILABLE.code, CREATION_UNAVAILABLE.message));
-            throw new CustomException(CREATION_UNAVAILABLE.message, HttpStatus.BAD_REQUEST,erroInformationList);
+           throw  CustomException.buildBy(CREATION_OR_UPDATE_UNAVAILABLE, ResourceName.PROBE.getValue(), HttpStatus.BAD_REQUEST);
         }
     }
 
