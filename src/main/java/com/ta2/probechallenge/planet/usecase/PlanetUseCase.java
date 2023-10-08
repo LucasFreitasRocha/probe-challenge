@@ -1,6 +1,5 @@
 package com.ta2.probechallenge.planet.usecase;
 
-import com.ta2.probechallenge.exception.CustomException;
 import com.ta2.probechallenge.planet.domain.PlanetDomain;
 import com.ta2.probechallenge.planet.dto.in.PlanetCreateDto;
 import com.ta2.probechallenge.planet.repository.PlanetRespositoryAdapter;
@@ -31,7 +30,7 @@ public class PlanetUseCase {
 
     public PlanetDomain update(UUID id, PlanetCreateDto planetCreateDto) {
         validation.validationUpdateUniqueName(planetCreateDto.name(), id);
-        PlanetDomain  domain = this.find(id);
+        PlanetDomain domain = this.find(id);
         domain.setArea(planetCreateDto.area());
         domain.setName(planetCreateDto.name());
         domain.setMaxProbesIn(planetCreateDto.maxProbesIn());

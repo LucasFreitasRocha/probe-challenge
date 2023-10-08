@@ -31,7 +31,8 @@ public class PlanetValidationImp implements PlanetValidation {
     @Override
     public PlanetDomain canDelete(UUID id) {
         PlanetDomain domain = respositoryAdapter.find(id);
-        if(domain.getProbes().size() > 0) throw CustomException.buildBy(CodeExceptionEnum.DELETE_UNAVAILABLE, ResourceName.PLANET.getValue(), HttpStatus.BAD_REQUEST);
+        if (domain.getProbes().size() > 0)
+            throw CustomException.buildBy(CodeExceptionEnum.DELETE_UNAVAILABLE, ResourceName.PLANET.getValue(), HttpStatus.BAD_REQUEST);
         return domain;
     }
 }

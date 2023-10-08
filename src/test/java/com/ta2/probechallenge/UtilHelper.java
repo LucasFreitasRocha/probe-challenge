@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class UtilHelper {
 
-    public static String getContentFile(String filename){
+    public static String getContentFile(String filename) {
         return new BufferedReader(new InputStreamReader(
                 Objects.requireNonNull(Thread
                         .currentThread()

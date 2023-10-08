@@ -8,7 +8,7 @@ public record ListProbeDto(
         String code
 ) {
 
-    public static ListProbeDto from(ProbeDomain domain){
+    public static ListProbeDto from(ProbeDomain domain) {
         return new ListProbeDto(domain.getId(), domain.getName(), domain.getCode());
     }
 }

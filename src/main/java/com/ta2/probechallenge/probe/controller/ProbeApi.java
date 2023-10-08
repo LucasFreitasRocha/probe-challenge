@@ -1,6 +1,5 @@
 package com.ta2.probechallenge.probe.controller;
 
-import com.ta2.probechallenge.probe.domain.ProbeDomain;
 import com.ta2.probechallenge.probe.dto.in.CommandDto;
 import com.ta2.probechallenge.probe.dto.in.CreateProbeDto;
 import com.ta2.probechallenge.probe.dto.in.NameProbeDto;

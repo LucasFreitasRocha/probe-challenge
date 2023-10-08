@@ -31,12 +31,13 @@ public interface PlanetApi {
     );
 
     @GetMapping("/{id}")
-    public ResponseEntity<PlanetDto> get( @PathVariable
-                                              @Parameter(name = "id", example = "40b3ebd5-2475-42ec-8e50-38384ae7d80b")
-                                              UUID id);
+    public ResponseEntity<PlanetDto> get(@PathVariable
+                                         @Parameter(name = "id", example = "40b3ebd5-2475-42ec-8e50-38384ae7d80b")
+                                         UUID id);
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete( @PathVariable
-                                          @Parameter(name = "id", example = "40b3ebd5-2475-42ec-8e50-38384ae7d80b")
-                                          UUID id);
+    public ResponseEntity<Void> delete(@PathVariable
+                                       @Parameter(name = "id", example = "40b3ebd5-2475-42ec-8e50-38384ae7d80b")
+                                       UUID id);
 
 }

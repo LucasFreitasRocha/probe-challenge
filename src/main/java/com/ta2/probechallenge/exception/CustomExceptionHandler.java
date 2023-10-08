@@ -19,8 +19,6 @@ import java.util.UUID;
 public class CustomExceptionHandler {
 
 
-
-
     @ExceptionHandler({CustomException.class})
     public ResponseEntity<CustomError> handleCustomException(CustomException ex, HttpServletRequest request) {
         return ResponseEntity.status(ex.getStatus()).body(CustomError.builder()
@@ -44,6 +42,7 @@ public class CustomExceptionHandler {
                 .path(request.getRequestURI())
                 .build());
     }
+
     @ExceptionHandler({HttpMessageNotReadableException.class})
     public ResponseEntity<CustomError> handleJsonParseException(Exception ex, HttpServletRequest request) {
         List<ErroInformation> erroInformation = new ArrayList<>();

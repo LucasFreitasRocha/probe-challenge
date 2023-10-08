@@ -26,20 +26,20 @@ public class PlanetService {
                 .build()));
     }
 
-    public PlanetDto find(UUID id){
+    public PlanetDto find(UUID id) {
         return PlanetDto.from(useCase.find(id));
     }
 
-    public PlanetDto update(UUID id, PlanetCreateDto planetCreateDto){
-        return  PlanetDto.from(useCase.update(id,planetCreateDto));
+    public PlanetDto update(UUID id, PlanetCreateDto planetCreateDto) {
+        return PlanetDto.from(useCase.update(id, planetCreateDto));
     }
 
 
-    public void delte(UUID id){
+    public void delte(UUID id) {
         useCase.delete(id);
     }
 
-    public List<ListPlanetDto> findAll(){
+    public List<ListPlanetDto> findAll() {
         return useCase.findAll().stream().map(ListPlanetDto::from).toList();
     }
 

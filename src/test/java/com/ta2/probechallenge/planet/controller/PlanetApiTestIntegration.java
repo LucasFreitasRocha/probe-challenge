@@ -7,7 +7,6 @@ import com.ta2.probechallenge.planet.entity.PlanetEntity;
 import com.ta2.probechallenge.planet.repository.PlanetRepositorySql;
 import com.ta2.probechallenge.probe.entity.ProbeEntity;
 import com.ta2.probechallenge.probe.repository.ProbeRepositorySql;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,11 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.UUID;
-
 import static com.ta2.probechallenge.UtilHelper.getContentFile;
 import static com.ta2.probechallenge.exception.CodeExceptionEnum.NOT_FOUND;
-import static org.hamcrest.Matchers.contains;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,19 +30,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PlanetApiTestIntegration {
 
     public static final String MARS = "MARS";
-    public static final String VENUS ="VENUS";
+    public static final String VENUS = "VENUS";
+    @Autowired
+    WebApplicationContext webApplicationContext;
+    MockMvc mockMvc;
     @Autowired
     private PlanetApi planetApi;
     @Autowired
     private PlanetRepositorySql planetRepositorySql;
-
     @Autowired
     private ProbeRepositorySql probeRepositorySql;
-
-    @Autowired
-    WebApplicationContext webApplicationContext;
-
-    MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
@@ -175,7 +168,7 @@ class PlanetApiTestIntegration {
 
     @Test
     public void updateAreaAndMaxProbesIn() throws Exception {
-        PlanetEntity entity =  getPlanet(MARS, 5, 5);
+        PlanetEntity entity = getPlanet(MARS, 5, 5);
         StringBuilder pathBuilder = new StringBuilder();
         pathBuilder.append("/planet/v1/");
         pathBuilder.append(entity.getId());
@@ -203,7 +196,7 @@ class PlanetApiTestIntegration {
 
     @Test
     public void updateBadRequestExceededLimitMaxProbesIn() throws Exception {
-        PlanetEntity entity =  getPlanet(MARS, 5, 5);
+        PlanetEntity entity = getPlanet(MARS, 5, 5);
         StringBuilder pathBuilder = new StringBuilder();
         pathBuilder.append("/planet/v1/");
         pathBuilder.append(entity.getId());

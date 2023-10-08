@@ -17,11 +17,6 @@ import java.util.Map;
 
 @Service
 public class ProbeService {
-    @Autowired
-    private ProbeRepositoryAdapter repository;
-    @Autowired
-    private PobreValidation validation;
-
     private final Map<String, String> spinLeft = Map.of(
             "N", "W",
             "E", "N",
@@ -34,6 +29,10 @@ public class ProbeService {
             "S", "W",
             "W", "N"
     );
+    @Autowired
+    private ProbeRepositoryAdapter repository;
+    @Autowired
+    private PobreValidation validation;
 
     public ProbeDto create(CreateProbeDto createProbeDto) {
 

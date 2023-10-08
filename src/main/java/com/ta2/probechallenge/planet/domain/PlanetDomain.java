@@ -8,13 +8,10 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 
@@ -39,7 +36,7 @@ public class PlanetDomain {
                 .builder()
                 .id(entity.getId())
                 .name(entity.getName())
-                .probes( entity.getProbes().stream().map(ProbeDomain::from).toList())
+                .probes(entity.getProbes().stream().map(ProbeDomain::from).toList())
                 .area(entity.getArea())
                 .maxProbesIn(entity.getMaxProbesIn())
                 .createAt(entity.getCreateAt())

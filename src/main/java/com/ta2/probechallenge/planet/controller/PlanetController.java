@@ -4,7 +4,6 @@ import com.ta2.probechallenge.planet.dto.in.PlanetCreateDto;
 import com.ta2.probechallenge.planet.dto.out.ListPlanetDto;
 import com.ta2.probechallenge.planet.dto.out.PlanetDto;
 import com.ta2.probechallenge.planet.service.PlanetService;
-import com.ta2.probechallenge.probe.dto.out.ProbeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,10 +12,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
+
 @RestController
-public class PlanetController implements PlanetApi{
+public class PlanetController implements PlanetApi {
     @Autowired
     PlanetService service;
+
     @Override
     public ResponseEntity<PlanetDto> create(PlanetCreateDto planetCreateDto) {
         PlanetDto dto = service.create(planetCreateDto);
