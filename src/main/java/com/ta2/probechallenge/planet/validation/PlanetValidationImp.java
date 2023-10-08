@@ -56,11 +56,12 @@ public class PlanetValidationImp implements PlanetValidation {
                     "The [0,0] position is reserved for the landing of the probes", HttpStatus.BAD_REQUEST);
         List<ProbeDomain> find = planetDomain.getProbes().stream().filter(filterProbe ->
                 filterProbe.getY().equals(probeDomain.getY())
-                        && filterProbe.getX().equals(probeDomain.getX())).toList();
+                        && filterProbe.getX().equals(probeDomain.getX())
+                        && !filterProbe.getId().equals(probeDomain.getId())).toList();
         if (find.size() > 0) throw CustomException.buildBy(CodeExceptionEnum.INVALID_POSITION,
                 "Already has a probe in this position", HttpStatus.BAD_REQUEST);
 
-        if (probeDomain.getX() > Math.abs(planetDomain.getArea())
+        if (probeDomain.getX() > Math.abs(planetDomain.getArea() )
                 || probeDomain.getY() > Math.abs(planetDomain.getArea())) {
             throw CustomException.buildBy(CodeExceptionEnum.INVALID_POSITION,
                     "the probes try to pass area of planet", HttpStatus.BAD_REQUEST);
