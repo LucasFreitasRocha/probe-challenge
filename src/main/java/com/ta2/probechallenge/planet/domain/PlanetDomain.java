@@ -2,12 +2,14 @@ package com.ta2.probechallenge.planet.domain;
 
 import com.ta2.probechallenge.planet.entity.PlanetEntity;
 import com.ta2.probechallenge.probe.domain.ProbeDomain;
+import com.ta2.probechallenge.probe.entity.ProbeEntity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class PlanetDomain {
     @Id
