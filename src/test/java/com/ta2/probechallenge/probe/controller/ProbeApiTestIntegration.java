@@ -19,7 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static com.ta2.probechallenge.UtilHelper.getContentFile;
+import java.util.UUID;
+
 import static com.ta2.probechallenge.exception.CodeExceptionEnum.NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -72,15 +73,43 @@ class ProbeApiTestIntegration {
                 .andExpect(jsonPath("$.position").value("N"));
     }
 
-    private PlanetEntity getPlanet(String name) {
-        return planetRepositorySql.save(
-                PlanetEntity.builder()
-                        .area(5)
-                        .maxProbesIn(5)
-                        .name(name)
-                        .build()
-        );
+
+    @Test
+    void createProbeOnPlanetThatNotExist() throws Exception {
+        mockMvc.perform(post("/probe/v1")
+                        .content("""
+                                {
+                                  "planet_id": "%s",
+                                  "name": "mars rover"
+                                }
+                                """.formatted(UUID.randomUUID()))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.path").value("/probe/v1"))
+                .andExpect(jsonPath("$.errors[0].code").value(NOT_FOUND.code))
+                .andExpect(jsonPath("$.errors[0].message").value(NOT_FOUND.message.formatted(ResourceName.PLANET.getValue())));
     }
+
+    @Test
+    void createProbeOnPlanetThatHasReachedMaxProbesOn() throws Exception {
+        PlanetEntity planetEntity =planetRepositorySql.save( PlanetEntity.builder()
+                .name("teste")
+                .maxProbesIn(0)
+                .build());
+        mockMvc.perform(post("/probe/v1")
+                        .content("""
+                                {
+                                  "planet_id": "%s",
+                                 "name": "mars rover"
+                                }
+                                """.formatted(planetEntity.getId()))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.path").value("/probe/v1"))
+                .andExpect(jsonPath("$.errors[0].message").value(CodeExceptionEnum.MAX_PROBES_ON_PLANET.message))
+                .andExpect(jsonPath("$.errors[0].code").value(CodeExceptionEnum.MAX_PROBES_ON_PLANET.code));
+    }
+
 
     @Test
     void validationCreateNotUUID() throws Exception {
@@ -100,7 +129,7 @@ class ProbeApiTestIntegration {
 
     @Test
     void createUnavalible() throws Exception {
-       PlanetEntity planetEntity =  getPlanet("MARS");
+        PlanetEntity planetEntity = getPlanet("MARS");
         probeRepositorySql.save(ProbeEntity.builder()
                 .name("test unavalible")
                 .planet(planetEntity)
@@ -157,7 +186,7 @@ class ProbeApiTestIntegration {
                 .x(1)
                 .y(2)
                 .position("N")
-                        .planet(getPlanet("MARS"))
+                .planet(getPlanet("MARS"))
                 .code("TP1")
                 .build());
         StringBuilder pathBuilder = new StringBuilder();
@@ -187,7 +216,7 @@ class ProbeApiTestIntegration {
                 .x(3)
                 .y(3)
                 .position("E")
-                        .planet(getPlanet("MARS"))
+                .planet(getPlanet("MARS"))
                 .code("TP2")
                 .build());
         StringBuilder pathBuilder = new StringBuilder();
@@ -214,7 +243,7 @@ class ProbeApiTestIntegration {
     void updateName() throws Exception {
         ProbeEntity probeEntity = probeRepositorySql.save(ProbeEntity.builder()
                 .name("test probe 1")
-                        .planet(getPlanet("MARS"))
+                .planet(getPlanet("MARS"))
                 .x(0)
                 .y(0)
                 .position("N")
@@ -257,7 +286,7 @@ class ProbeApiTestIntegration {
                 .x(3)
                 .y(3)
                 .position("E")
-                        .planet(planetEntity)
+                .planet(planetEntity)
                 .code("TP2")
                 .build());
         mockMvc.perform(get("/probe/v1")
@@ -267,5 +296,13 @@ class ProbeApiTestIntegration {
 
     }
 
-
+    private PlanetEntity getPlanet(String name) {
+        return planetRepositorySql.save(
+                PlanetEntity.builder()
+                        .area(5)
+                        .maxProbesIn(5)
+                        .name(name)
+                        .build()
+        );
+    }
 }
