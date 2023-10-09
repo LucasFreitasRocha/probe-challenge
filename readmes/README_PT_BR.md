@@ -1,4 +1,4 @@
-# Desafio das sondas em planets
+# Desafio das sondas nos planetas
 
 ## Explicação basica
 
