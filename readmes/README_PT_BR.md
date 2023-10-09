@@ -1,4 +1,6 @@
-# Desafio das sondas em planets
+# Desafio das sondas nos planetas
+
+# teste disponivel em [railway](https://probe-challenge-production.up.railway.app/)
 
 ## Explicação basica
 

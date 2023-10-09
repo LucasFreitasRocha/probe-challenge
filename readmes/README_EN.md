@@ -1,5 +1,7 @@
 # Probes on Planets Challenge
 
+# poc release on [railway](https://probe-challenge-production.up.railway.app/)
+
 How the challenge works:
 
 Imagine a developer received a task from a person on the product team. The product team member wanted to be able to control probes on other planets through commands. To explain the product's functionality, the following example was written on a piece of paper:
